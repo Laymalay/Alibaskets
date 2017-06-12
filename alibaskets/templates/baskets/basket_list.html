@@ -1,0 +1,26 @@
+{% extends 'baskets/base.html' %}
+{% block content %}
+            <div class="row">
+                <div class="col-md-4">
+                <a href="{% url 'alibaskets:basket_new' %}" ><span class="glyphicon glyphicon-plus"></span></a>
+                <!--<a class="top-menu"><span class="glyphicon glyphicon-minus"></span></a>-->
+                <ul class="nav nav-pills nav-stacked ">
+                   {% for basket in baskets %}
+                  <li role="presentation">
+                  <a href="{% url 'alibaskets:basket_detail' pk=basket.pk %}" title="detail">
+                  <span class="glyphicon glyphicon-trash" style="color: black"></span> {{ basket.name }}</a></li>
+                {% endfor %}
+                </ul>
+                </div>
+
+
+                <div class="col-md-4"> 
+                </div>
+                
+                <div class="col-md-4">
+                tasks  
+                </div>
+                
+       
+{% endblock content %}
+  

@@ -1,0 +1,54 @@
+   {% load staticfiles %}
+    <html>
+        <head>
+            <title>Hehe</title>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+            <link rel="stylesheet" href="{% static 'css/bootstrap-treme.css' %}">
+            <link href="{% static 'css/plugins/morris.css' %}" rel="stylesheet">
+            <link rel="stylesheet" href="{% static 'css/alibaskets.css' %}">
+            <link href="https://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Delius+Unicase" rel="stylesheet"> 
+            <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet"> 
+        </head>
+       <body>
+        <div class="page-header">
+             <h1><a href="/">Alibaskets</a></h1>
+        </div>
+        <div class="content"> 
+                {% block content %}
+                {% endblock %}
+        </div>
+
+       
+        
+        <!-- jQuery -->
+        <script src="{% static 'js/jquery.js' %}"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+        <!-- Morris Charts JavaScript -->
+        <script src="{% static 'js/plugins/morris/raphael.min.js' %}"></script>
+        <script src="{% static 'js/plugins/morris/morris.min.js' %}"></script>
+        <script src="{% static 'js/plugins/morris/morris-data.js' %}"></script>
+       
+ <footer class="footer">
+      <div class="container">
+        <p class="text-muted"> &copy; Alinka
+            2017 </p>
+      </div>
+    </footer>
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    </body>
+
+     
+  
+    </html>

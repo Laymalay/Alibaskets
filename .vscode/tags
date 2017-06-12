@@ -1,0 +1,99 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+0001_initial.py	../alibaskets/migrations/0001_initial.py	1;"	kind:file	line:1
+0002_basket_delta_time.py	../alibaskets/migrations/0002_basket_delta_time.py	1;"	kind:file	line:1
+ALLOWED_HOSTS	../alisite/settings.py	/^ALLOWED_HOSTS = []$/;"	kind:variable	line:29
+AUTH_PASSWORD_VALIDATORS	../alisite/settings.py	/^AUTH_PASSWORD_VALIDATORS = [$/;"	kind:variable	line:89
+AlibasketsConfig	../alibaskets/apps.py	/^class AlibasketsConfig(AppConfig):$/;"	kind:class	line:7
+BASE_DIR	../alisite/settings.py	/^BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))$/;"	kind:variable	line:17
+Basket	../alibaskets/models.py	/^class Basket(models.Model):$/;"	kind:class	line:7
+BasketAdmin	../alibaskets/admin.py	/^class BasketAdmin(admin.ModelAdmin):$/;"	kind:class	line:8
+BasketEditForm	../alibaskets/forms.py	/^class BasketEditForm(ModelForm):$/;"	kind:class	line:17
+BasketForm	../alibaskets/forms.py	/^class BasketForm(ModelForm):$/;"	kind:class	line:5
+DATABASES	../alisite/settings.py	/^DATABASES = {$/;"	kind:variable	line:78
+DEBUG	../alisite/settings.py	/^DEBUG = True$/;"	kind:variable	line:27
+INSTALLED_APPS	../alisite/settings.py	/^INSTALLED_APPS = [$/;"	kind:variable	line:34
+LANGUAGE_CODE	../alisite/settings.py	/^LANGUAGE_CODE = 'en-us'$/;"	kind:variable	line:108
+MIDDLEWARE	../alisite/settings.py	/^MIDDLEWARE = [$/;"	kind:variable	line:44
+MODE_CHOICES	../alibaskets/models.py	/^    MODE_CHOICES = (('T', 'time'),$/;"	kind:variable	line:8
+Meta	../alibaskets/forms.py	/^    class Meta:$/;"	kind:class	line:11
+Meta	../alibaskets/forms.py	/^    class Meta:$/;"	kind:class	line:18
+Meta	../alibaskets/models.py	/^    class Meta:$/;"	kind:class	line:24
+Migration	../alibaskets/migrations/0001_initial.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:8
+Migration	../alibaskets/migrations/0002_basket_delta_time.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:9
+PathForm	../alibaskets/forms.py	/^class PathForm(Form):$/;"	kind:class	line:24
+ROOT_URLCONF	../alisite/settings.py	/^ROOT_URLCONF = 'alisite.urls'$/;"	kind:variable	line:54
+SECRET_KEY	../alisite/settings.py	/^SECRET_KEY = '+y!-40$@luc(0(&qn5ws@4w^vg+*0286uzpfpnzc)j+bi#e@*-'$/;"	kind:variable	line:24
+STATIC_URL	../alisite/settings.py	/^STATIC_URL = '\/static\/'$/;"	kind:variable	line:122
+TEMPLATES	../alisite/settings.py	/^TEMPLATES = [$/;"	kind:variable	line:56
+TIME_ZONE	../alisite/settings.py	/^TIME_ZONE = 'Europe\/Minsk'$/;"	kind:variable	line:110
+USE_I18N	../alisite/settings.py	/^USE_I18N = True$/;"	kind:variable	line:112
+USE_L10N	../alisite/settings.py	/^USE_L10N = True$/;"	kind:variable	line:114
+USE_TZ	../alisite/settings.py	/^USE_TZ = True$/;"	kind:variable	line:116
+WSGI_APPLICATION	../alisite/settings.py	/^WSGI_APPLICATION = 'alisite.wsgi.application'$/;"	kind:variable	line:72
+__init__.py	../alibaskets/__init__.py	1;"	kind:file	line:1
+__init__.py	../alibaskets/migrations/__init__.py	1;"	kind:file	line:1
+__init__.py	../alisite/__init__.py	1;"	kind:file	line:1
+__unicode__	../alibaskets/models.py	/^    def __unicode__(self):$/;"	kind:member	line:17
+admin.py	../alibaskets/admin.py	1;"	kind:file	line:1
+app_name	../alibaskets/urls.py	/^app_name = 'alibaskets'$/;"	kind:variable	line:4
+application	../alisite/wsgi.py	/^application = get_wsgi_application()$/;"	kind:variable	line:16
+apps.py	../alibaskets/apps.py	1;"	kind:file	line:1
+basket_detail	../alibaskets/views.py	/^def basket_detail(request, pk):$/;"	kind:function	line:74
+basket_list	../alibaskets/views.py	/^def basket_list(request):$/;"	kind:function	line:126
+basket_new	../alibaskets/views.py	/^def basket_new(request):$/;"	kind:function	line:50
+clean_path	../alibaskets/forms.py	/^    def clean_path(self):$/;"	kind:member	line:26
+clean_path	../alibaskets/forms.py	/^    def clean_path(self):$/;"	kind:member	line:6
+date_created	../alibaskets/models.py	/^    date_created = models.DateTimeField(auto_now_add=True)$/;"	kind:variable	line:15
+date_hierarchy	../alibaskets/admin.py	/^    date_hierarchy = 'date_created'$/;"	kind:variable	line:12
+delta_time	../alibaskets/models.py	/^    delta_time = models.DurationField(default=datetime.timedelta(days=1,minutes=0))$/;"	kind:variable	line:12
+dependencies	../alibaskets/migrations/0001_initial.py	/^    dependencies = [$/;"	kind:variable	line:12
+dependencies	../alibaskets/migrations/0002_basket_delta_time.py	/^    dependencies = [$/;"	kind:variable	line:11
+field	../alibaskets/migrations/0002_basket_delta_time.py	/^            field=models.DurationField(default=datetime.timedelta(0, 1200)),$/;"	kind:variable	line:19
+fields	../alibaskets/admin.py	/^    fields = ('name', 'path') #change the fields which could be edited$/;"	kind:variable	line:14
+fields	../alibaskets/forms.py	/^        fields = ['mode', 'delta_time', 'max_size']$/;"	kind:variable	line:20
+fields	../alibaskets/forms.py	/^        fields = ['name', 'path', 'mode', 'delta_time', 'max_size']$/;"	kind:variable	line:13
+fields	../alibaskets/migrations/0001_initial.py	/^            fields=[$/;"	kind:variable	line:18
+forms.py	../alibaskets/forms.py	1;"	kind:file	line:1
+initial	../alibaskets/migrations/0001_initial.py	/^    initial = True$/;"	kind:variable	line:10
+iso8601	../alibaskets/views.py	/^def iso8601(value):$/;"	kind:function	line:15
+labels	../alibaskets/forms.py	/^        labels = {'delta_time': ('Cleaning interval : D HH:MM:SS'),}$/;"	kind:variable	line:15
+labels	../alibaskets/forms.py	/^        labels = {'delta_time': ('Cleaning interval : D HH:MM:SS'),}$/;"	kind:variable	line:22
+labels	../alibaskets/forms.py	/^        labels = {'max_size': ('Max size in megabytes'),}$/;"	kind:variable	line:14
+labels	../alibaskets/forms.py	/^        labels = {'max_size': ('Max size in megabytes'),}$/;"	kind:variable	line:21
+last_access	../alibaskets/models.py	/^    last_access = models.DateTimeField(auto_now=True)$/;"	kind:variable	line:16
+list_display	../alibaskets/admin.py	/^    list_display = ('name', 'path', 'date_created')$/;"	kind:variable	line:9
+list_filter	../alibaskets/admin.py	/^    list_filter = ('date_created',)$/;"	kind:variable	line:11
+manage.py	../manage.py	1;"	kind:file	line:1
+max_size	../alibaskets/models.py	/^    max_size = models.IntegerField(default='10')$/;"	kind:variable	line:13
+mode	../alibaskets/models.py	/^    mode = models.CharField(max_length=20, choices=MODE_CHOICES, default='T')$/;"	kind:variable	line:14
+model	../alibaskets/forms.py	/^        model = Basket$/;"	kind:variable	line:12
+model	../alibaskets/forms.py	/^        model = Basket$/;"	kind:variable	line:19
+model_name	../alibaskets/migrations/0002_basket_delta_time.py	/^            model_name='basket',$/;"	kind:variable	line:17
+models.py	../alibaskets/models.py	1;"	kind:file	line:1
+name	../alibaskets/apps.py	/^    name = 'alibaskets'$/;"	kind:variable	line:8
+name	../alibaskets/migrations/0001_initial.py	/^            name='Basket',$/;"	kind:variable	line:17
+name	../alibaskets/migrations/0002_basket_delta_time.py	/^            name='delta_time',$/;"	kind:variable	line:18
+name	../alibaskets/models.py	/^    name = models.CharField(max_length=30,help_text='100 characters max.')$/;"	kind:variable	line:10
+operations	../alibaskets/migrations/0001_initial.py	/^    operations = [$/;"	kind:variable	line:15
+operations	../alibaskets/migrations/0002_basket_delta_time.py	/^    operations = [$/;"	kind:variable	line:15
+options	../alibaskets/migrations/0001_initial.py	/^            options={$/;"	kind:variable	line:27
+ordering	../alibaskets/admin.py	/^    ordering = ('last_access', 'date_created')$/;"	kind:variable	line:13
+ordering	../alibaskets/models.py	/^        ordering = ['name']$/;"	kind:variable	line:25
+path	../alibaskets/forms.py	/^    path = forms.CharField(label='path', max_length=100)$/;"	kind:variable	line:25
+path	../alibaskets/models.py	/^    path = models.CharField(max_length=50)$/;"	kind:variable	line:11
+remove_basket	../alibaskets/views.py	/^def remove_basket(request,pk):$/;"	kind:function	line:68
+search_fields	../alibaskets/admin.py	/^    search_fields = ('name', 'date_created')$/;"	kind:variable	line:10
+settings.py	../alisite/settings.py	1;"	kind:file	line:1
+tests.py	../alibaskets/tests.py	1;"	kind:file	line:1
+urlpatterns	../alibaskets/urls.py	/^urlpatterns = [$/;"	kind:variable	line:5
+urlpatterns	../alisite/urls.py	/^urlpatterns = [$/;"	kind:variable	line:20
+urls.py	../alibaskets/urls.py	1;"	kind:file	line:1
+urls.py	../alisite/urls.py	1;"	kind:file	line:1
+views.py	../alibaskets/views.py	1;"	kind:file	line:1
+views.py	../alisite/views.py	1;"	kind:file	line:1
+wsgi.py	../alisite/wsgi.py	1;"	kind:file	line:1

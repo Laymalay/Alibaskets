@@ -1,0 +1,129 @@
+ h1 a {
+        color: rgb(49, 151, 116);
+        font-family: 'Leckerli One', cursive;
+        font-size: 30px;
+    }
+
+body {
+    padding-left: 0px;
+}
+
+.page-header {
+        background-color: rgb(50, 130, 116);
+        margin-top: 0;
+        padding: 20px 20px 20px 40px;
+        font-size: 60px;
+        font-family: 'Leckerli One', cursive;
+    }
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: white;
+    font-size: 36pt;
+    text-decoration: none;
+    text-align:  center;
+    text-shadow: 1px 1px 1px aqua, 0 0 1em ;
+}
+
+.content {
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: 'Delius Unicase', cursive;
+    
+}
+
+h1, h2, h3, h4 {
+    font-size: 8pt;
+    font-family: 'Delius Unicase', cursive;
+}
+
+.date {
+    color: #828282;
+    font-family: 'Delius Unicase', cursive;
+}
+.path{
+    color: rgb(49, 151, 116);
+    font-family: 'Delius Unicase', cursive;
+}
+.save {
+    float: right;
+    font-family: 'Delius Unicase', cursive;
+    
+}
+
+.post-form textarea, .post-form input {
+    width: 100%;
+     font-family: 'Titillium Web', sans-serif;
+     font-weight: bold ;
+}
+.post-form{
+     font-family: 'Delius Unicase', cursive;
+}
+
+
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    float: left;
+    font-size: 10pt;
+    margin-right: 20px;
+    font-family: 'Delius Unicase', cursive;
+    
+}
+
+.panel-body{
+  overflow-y: scroll;
+  height: 60%;
+}
+.panel{
+    max-height: 100%;
+    max-width: 100%;
+}
+.basket{
+    color: rgb(49, 151, 116);
+    font-family: 'Delius Unicase', cursive;
+    font-size: 40px;
+}
+
+span{
+    color: rgb(49, 151, 116);
+    font-size:20px;
+    
+    margin: 20px;
+}
+
+.nav>li>a{
+ font-family: 'Delius Unicase', cursive;
+ color: rgb(49, 151, 116);
+ 
+
+}
+.nav>li>a:hover,
+.nav>li>a:focus {
+    text-decoration: none;
+    color: white;
+    background-color: rgb(49, 151, 116);
+    opacity: 0.5;
+   
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 10%;
+  background-color: rgb(50, 130, 116);
+  opacity: 0.6;
+}
+
+
+.container {
+  width: auto;
+  max-width: 680px;
+}
+.container .text-muted {
+  margin: 20px 0;
+  color: white;
+  text-align:  center;
+  text-shadow: 1px 1px 1px rgb(100, 130, 116), 0 0 1em ;
+}

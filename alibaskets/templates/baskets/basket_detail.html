@@ -1,0 +1,64 @@
+ {% extends 'baskets/base.html' %}
+
+    {% block content %}
+    <div class="row">
+    <div class="col-md-4">
+                
+                <p class="basket">
+                     <span class="glyphicon glyphicon-trash" style="color: black; font-size:40px;margin:10px"></span>
+                     {{ basket.name }}</p>   
+                <h4 class="date">{{ basket.date_created }}</h4>  
+                <h4 class="path">{{ basket.path }}</h4>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading"> 
+                <span class="glyphicon glyphicon-folder-open"></span> 
+                files 
+                </div>   
+              <div class="panel-body">
+                {% for object in list_of_objects %}
+                
+                {% comment %}<option value="{{object.name}}"
+                    {% if object == current_obj %}selected="selected"{% endif %}>
+                    {{object.name|capfirst}}
+                </option>{% endcomment %}
+
+                 <li style='font-family: Titillium Web, sans-serif;'>{{ object.name }} 
+                 <p style='font-size:12px; font-family: Titillium Web, sans-serif;'>{{ object.time}} </p>
+                  <p style='font-size:12px; color:red; font-family: Titillium Web, sans-serif;'>{{object.disappearances_time}} </p>
+                 <hr>
+                {% endfor %}
+            </div>
+        </div>
+           
+    </div>
+
+ <div class="col-md-4">
+    <form method="POST" class="post-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="btn-group" role="group" aria-label="Close">
+                <button type="submit" class="save btn btn-default" name="remove_button">remove</button>
+                <button type="submit" class="save btn btn-default" name="restore_button">restore</button>
+                </div>
+    </form>
+      <form method="POST" class="post-form">{% csrf_token %}
+                    {{ form_basket.as_p }}
+                   <button type="submit" class="save btn btn-default" name="update_button">update</button>
+      </form>
+
+            <a href="{% url 'alibaskets:remove_basket' pk=basket.pk %}" ><span style='font-size:30px ' class="glyphicon glyphicon-remove-sign"></span></a>
+            
+</div>
+ </div>
+
+
+ {%if error%}
+  <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Warning!</strong> {{error}}
+        </div>
+{% endif %}
+
+    {% endblock %}
