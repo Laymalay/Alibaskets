@@ -43,22 +43,31 @@
                 <button type="submit" class="save btn btn-default" name="restore_button">restore</button>
                 </div>
     </form>
+    <hr/>
+        <p class='Basket' style='font-size:20px'>Choose type of data:</p>
+        <select name='data_type' title="data_type" id="data_type">
+        <option value='file'>File</option>
+        <option value='empty dir'>Empty directory</option>
+        <option value='not empty dir'>Not empty directory</option>
+        </select>
+    <hr/>
+            <p class='Basket' style='font-size:20px'>Choose restore params:</p>
+            
+            <select title="restore_params">
+            <option value="Merge" > Merge</option>
+            <option value="Replace" >Replace</option>
+            </select>
+
+    <hr/>
+      <p class='Basket' style='font-size:20px'>Basket settings:</p>
       <form method="POST" class="post-form">{% csrf_token %}
                     {{ form_basket.as_p }}
                    <button type="submit" class="save btn btn-default" name="update_button">update</button>
       </form>
 
-            <a href="{% url 'alibaskets:remove_basket' pk=basket.pk %}" ><span style='font-size:30px ' class="glyphicon glyphicon-remove-sign"></span></a>
+            <a title='remove basket' href="{% url 'alibaskets:remove_basket' pk=basket.pk %}" ><span style='font-size:30px ' class="glyphicon glyphicon-remove-sign"></span></a>
             
 </div>
  </div>
-
-
- {%if error%}
-  <div class="alert alert-warning alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Warning!</strong> {{error}}
-        </div>
-{% endif %}
 
     {% endblock %}

@@ -7,9 +7,9 @@ import datetime
 class Basket(models.Model):
     MODE_CHOICES = (('T', 'time'),
                     ('S', 'size'),)
-    name = models.CharField(max_length=30,help_text='100 characters max.')
-    path = models.CharField(max_length=50)
-    delta_time = models.DurationField(default=datetime.timedelta(days=1,minutes=0))
+    name = models.CharField(max_length=30)
+    path = models.CharField(max_length=50, unique=True)
+    delta_time = models.DurationField(default=datetime.timedelta(days=1, minutes=0))
     max_size = models.IntegerField(default='10')
     mode = models.CharField(max_length=20, choices=MODE_CHOICES, default='T')
     date_created = models.DateTimeField(auto_now_add=True)

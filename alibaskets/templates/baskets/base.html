@@ -8,45 +8,62 @@
             <meta name="description" content="">
             <meta name="author" content="">
             <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-            <link rel="stylesheet" href="{% static 'css/bootstrap-treme.css' %}">
             <link href="{% static 'css/plugins/morris.css' %}" rel="stylesheet">
             <link rel="stylesheet" href="{% static 'css/alibaskets.css' %}">
             <link href="https://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css?family=Delius+Unicase" rel="stylesheet"> 
             <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet"> 
+            {% comment %}<link rel="stylesheet" href="{% static 'css/bootstrap-select-1.12.2/dist/css/bootstrap-select.css' %}">
+            <link href="{% static 'css/bootstrap-select-1.12.2/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+            <link rel="stylesheet" href="{% static 'css/base.css' %}">
+            <link rel="stylesheet" href="{% static 'css/custom.css' %}">{% endcomment %}
+
         </head>
+        
        <body>
+
+           
         <div class="page-header">
              <h1><a href="/">Alibaskets</a></h1>
         </div>
         <div class="content"> 
+
                 {% block content %}
                 {% endblock %}
+
         </div>
 
-       
-        
-        <!-- jQuery -->
         <script src="{% static 'js/jquery.js' %}"></script>
-
-        <!-- Bootstrap Core JavaScript -->
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
-        <!-- Morris Charts JavaScript -->
         <script src="{% static 'js/plugins/morris/raphael.min.js' %}"></script>
         <script src="{% static 'js/plugins/morris/morris.min.js' %}"></script>
         <script src="{% static 'js/plugins/morris/morris-data.js' %}"></script>
-       
- <footer class="footer">
-      <div class="container">
-        <p class="text-muted"> &copy; Alinka
-            2017 </p>
-      </div>
-    </footer>
+        {% comment %}<script type="text/javascript" src="{% static 'css/bootstrap-select-1.12.2/dist/js/bootstrap-select.js' %}"></script>
+        <script type="text/javascript" src="{% static 'css/bootstrap-select-1.12.2/dist/js/jquery-1.10.2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'css/bootstrap-select-1.12.2/dist/js/bootstrap.min.js' %}"></script>{% endcomment %}
 
+        <div>
+                {%if messages%}
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong {% if message.tags %} class="{{ message.tags }}"{% endif %} >Error!</strong> {{ message }}
+                </div>
+            {% endfor %}   
+        {% endif %}
+        </div>
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+        <div>
+                <footer class="footer">
+                    <div class="container">
+                        <p class="text-muted"> &copy; Alinka
+                            2017 </p>
+                    </div>
+                    </footer>
+        </div>
+
+    {% comment %}<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>{% endcomment %}
     </body>
 
      

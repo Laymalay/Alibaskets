@@ -11,6 +11,111 @@ from django.shortcuts import render, get_object_or_404
 from .forms import BasketForm, PathForm, ValidationError, BasketEditForm
 from alirem.alirm import Alirem
 from notifications.signals import notify
+from django.contrib import messages
+import shutil
+
+
+def basket_new(request):
+    if request.method == "POST":
+        form = BasketForm(request.POST)
+        if form.is_valid():
+            basket = form.save()
+            new_basket = Alirem()
+            new_basket.create_basket(basket.path)
+            basket.save()
+            return redirect('alibaskets:basket_list')
+
+        else:
+            messages.add_message(request, messages.ERROR, "This path is already exists")
+            form = BasketForm()
+            return render(request, 'baskets/basket_edit.html', {'form': form})
+
+    else:
+        form = BasketForm()
+        return render(request, 'baskets/basket_edit.html', {'form': form})
+
+def remove_basket(request, pk):
+    basket = get_object_or_404(Basket, pk=pk)
+    name = basket.name
+    shutil.rmtree(basket.path)
+    basket.delete()
+    return render(request, 'baskets/remove_basket.html', {'name': name})
+
+def basket_detail(request, pk):
+    basket = get_object_or_404(Basket, pk=pk)
+    selected_option = request.GET.get('data_type', None)
+    print selected_option
+    selected_option = request.POST.get('restore_params', None)
+    print selected_option
+    if request.method == "POST":
+        form = PathForm(request.POST)
+        form_edit_basket = BasketEditForm(request.POST,
+                                          initial={'mode':basket.mode,
+                                                   'delta_time':basket.delta_time,
+                                                   'max_size':basket.max_size})
+        if request.POST.get("update_button") is not None:
+            if form_edit_basket.is_valid():
+                basket.mode = form_edit_basket.cleaned_data['mode']
+                basket.delta_time = form_edit_basket.cleaned_data['delta_time']
+                basket.max_size = form_edit_basket.cleaned_data['max_size']
+                basket.save()
+                return redirect('alibaskets:basket_detail', pk=basket.pk)
+        if request.POST.get("remove_button") is not None:
+            if form.is_valid():
+                path = form.clean_path()
+                remover = Alirem()
+                remover.remove(path=path,
+                               basket_path=basket.path,
+                               is_recursive=True)
+                return redirect('alibaskets:basket_detail', pk=basket.pk)
+            else:
+                form = PathForm()
+                basket_handler = Alirem()
+                form_edit_basket = BasketEditForm(initial=
+                                                  {'mode':basket.mode,
+                                                   'delta_time':basket.delta_time,
+                                                   'max_size':basket.max_size})
+                list_of_objects_in_basket = basket_handler.get_basket_list(basket.path)
+                messages.add_message(request, messages.ERROR, "This path is not exists")
+                return render(request, 'baskets/basket_detail.html',
+                              {'basket': basket,
+                               'form' : form,
+                               'list_of_objects': list_of_objects_in_basket,
+                               'form_basket': form_edit_basket,})
+        if request.POST.get("restore_button")is not None:
+            if form.is_valid():
+                path = form.clean_path()
+                form_edit_basket = BasketEditForm(initial=
+                                                  {'mode':basket.mode,
+                                                   'delta_time':basket.delta_time,
+                                                   'max_size':basket.max_size})
+                restorer = Alirem()
+                if not restorer.restore(restorename=path, basket_path=basket.path):
+                    messages.add_message(request, messages.ERROR, "This path is not exists")
+                return redirect('alibaskets:basket_detail', pk=basket.pk)
+    else:
+        form_path = PathForm()
+        form_edit_basket = BasketEditForm(initial=
+                                          {'mode':basket.mode,
+                                           'delta_time':basket.delta_time,
+                                           'max_size':basket.max_size})
+        basket_handler = Alirem()
+        basket_handler.check_basket_for_cleaning(mode=basket.get_mode_display(),
+                                                 basket_path=basket.path,
+                                                 time=iso8601(basket.delta_time),
+                                                 size=basket.max_size)
+        list_of_objects_in_basket = basket_handler.get_basket_list(basket.path)
+        for obj in list_of_objects_in_basket:
+            obj.disappearances_time = obj.time + basket.delta_time
+        return render(request, 'baskets/basket_detail.html',
+                      {'basket': basket,
+                       'form' : form_path,
+                       'form_basket': form_edit_basket,
+                       'list_of_objects': list_of_objects_in_basket})
+
+def basket_list(request):
+    baskets = Basket.objects.all()
+    return render(request, 'baskets/basket_list.html', {'baskets': baskets})
 
 def iso8601(value):
     # split seconds to larger units
@@ -46,84 +151,3 @@ def iso8601(value):
     # seconds = seconds.rstrip('0')
     time += '{}S'.format(seconds)
     return u'P' + date + time
-
-def basket_new(request):
-    if request.method == "POST":
-        form = BasketForm(request.POST)
-        if form.is_valid():
-            basket = form.save()
-            new_basket = Alirem()
-            if new_basket.create_basket(basket.path):
-                basket.save()
-                return redirect('alibaskets:basket_list')
-        else:
-            # TODO: ERROR MESSAGE
-            form = BasketForm()
-            return render(request, 'baskets/basket_edit.html', {'form': form})
-
-    else:
-        form = BasketForm()
-        return render(request, 'baskets/basket_edit.html', {'form': form})
-
-def remove_basket(request,pk):
-    basket = get_object_or_404(Basket, pk=pk)
-    name = basket.name
-    basket.delete()
-    return render(request, 'baskets/remove_basket.html', {'name': name})
-
-def basket_detail(request, pk):
-    basket = get_object_or_404(Basket, pk=pk)
-    if request.method == "POST":
-        form = PathForm(request.POST)
-        form_edit_basket = BasketEditForm(request.POST,
-                                          initial={'mode':basket.mode,
-                                                   'delta_time':basket.delta_time,
-                                                   'max_size':basket.max_size})
-        if request.POST.get("update_button") is not None:
-             if form_edit_basket.is_valid():
-                basket.mode = form_edit_basket.cleaned_data['mode']
-                basket.delta_time = form_edit_basket.cleaned_data['delta_time']
-                basket.max_size = form_edit_basket.cleaned_data['max_size']
-                basket.save()
-                return redirect('alibaskets:basket_detail', pk=basket.pk)
-        if request.POST.get("remove_button") is not None:
-            if form.is_valid():
-                path = form.clean_path()
-                remover = Alirem()
-                remover.remove(path=path, basket_path=basket.path)
-                return redirect('alibaskets:basket_detail', pk=basket.pk)
-            else:
-                form = PathForm()
-                basket_handler = Alirem()
-                list_of_objects_in_basket = basket_handler.get_basket_list(basket.path)
-                return render(request, 'baskets/basket_detail.html',
-                              {'basket': basket,
-                               'form' : form,
-                               'list_of_objects': list_of_objects_in_basket,
-                               'error': 'EEROORR'})
-        if request.POST.get("restore_button")is not None:
-            if form.is_valid():
-                path = form.clean_path()
-                restorer = Alirem()
-                restorer.restore(restorename=path, basket_path=basket.path)
-                return redirect('alibaskets:basket_detail', pk=basket.pk)
-
-    else:
-        form_path = PathForm()
-        form_edit_basket = BasketEditForm(initial={'mode':basket.mode,'delta_time':basket.delta_time,'max_size':basket.max_size})
-        basket_handler = Alirem()
-        basket_handler.check_basket_for_cleaning(mode=basket.get_mode_display(), basket_path=basket.path,
-                                                 time=iso8601(basket.delta_time), size=basket.max_size)
-        list_of_objects_in_basket = basket_handler.get_basket_list(basket.path)
-        for obj in list_of_objects_in_basket:
-            obj.disappearances_time = obj.time + basket.delta_time
-        return render(request, 'baskets/basket_detail.html',
-                      {'basket': basket,
-                       'form' : form_path,
-                       'form_basket': form_edit_basket,
-                       'list_of_objects': list_of_objects_in_basket})
-
-def basket_list(request):
-    baskets = Basket.objects.all()
-    return render(request, 'baskets/basket_list.html', {'baskets': baskets})
-
