@@ -2,13 +2,43 @@
 
     {% block content %}
     <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
                 
                 <p class="basket">
                      <span class="glyphicon glyphicon-trash" style="color: black; font-size:40px;margin:10px"></span>
-                     {{ basket.name }}</p>   
+                     {{ basket.name }} <a title='remove basket' href="{% url 'alibaskets:remove_basket' pk=basket.pk %}" >
+                         <span style='font-size:30px; color:red ' class="glyphicon glyphicon-remove-sign"></span></a>
+                         </p> 
                 <h4 class="date">{{ basket.date_created }}</h4>  
                 <h4 class="path">{{ basket.path }}</h4>
+
+
+
+      {% comment %}<div class="progress" >
+        <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-aqua active"  role="progressbar" aria-valuenow={{basket_size_in_proc}} aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+        <span class="sr-only">{{basket_size_in_proc}}% Complete (success)</span>
+        {{basket_size_in_proc}}%
+        </div>
+        </div>{% endcomment %}
+
+
+        <progress value={{basket_size_in_proc}} max="100">
+        </progress>
+             <p> {{basket_size_in_proc}}%
+             </p>
+      <p class='Basket' style='font-size:20px'>Basket settings:</p>
+      <form method="POST" class="post-form">
+                    {% csrf_token %}
+                    {{ form_basket.as_p }}
+                    <button type="submit" class="save btn btn-default pull-left" name="update_button">update</button>
+      </form>
+      
+      
+       
+            
+            
+    </div>
+    <div class="col-md-1">
     </div>
     <div class="col-md-4">
         <div class="panel panel-success">
@@ -33,40 +63,36 @@
         </div>
            
     </div>
+<div class="col-md-1">
+    </div>
+ <div class="col-md-3">
 
- <div class="col-md-4">
-    <form method="POST" class="post-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <div class="btn-group" role="group" aria-label="Close">
-                <button type="submit" class="save btn btn-default" name="remove_button">remove</button>
-                <button type="submit" class="save btn btn-default" name="restore_button">restore</button>
-                </div>
-    </form>
-    <hr/>
-        <p class='Basket' style='font-size:20px'>Choose type of data:</p>
-        <select name='data_type' title="data_type" id="data_type">
-        <option value='file'>File</option>
-        <option value='empty dir'>Empty directory</option>
-        <option value='not empty dir'>Not empty directory</option>
-        </select>
-    <hr/>
-            <p class='Basket' style='font-size:20px'>Choose restore params:</p>
-            
-            <select title="restore_params">
-            <option value="Merge" > Merge</option>
-            <option value="Replace" >Replace</option>
-            </select>
-
-    <hr/>
-      <p class='Basket' style='font-size:20px'>Basket settings:</p>
-      <form method="POST" class="post-form">{% csrf_token %}
-                    {{ form_basket.as_p }}
-                   <button type="submit" class="save btn btn-default" name="update_button">update</button>
+<form method="POST" class="post-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                     <button type="submit" class="save btn btn-default" name="create_task_button">Go</button>
       </form>
+{% comment %}
+   <div class="fieldWrapper">
 
-            <a title='remove basket' href="{% url 'alibaskets:remove_basket' pk=basket.pk %}" ><span style='font-size:30px ' class="glyphicon glyphicon-remove-sign"></span></a>
-            
+                        <label for="{{ form.action.id_for_label }}" class='Basket' style='font-size:20px'>Action:</label>
+                        <p>{{form.action}}</p>
+
+                        <label for="{{ form.params.id_for_label }}" class='Basket' style='font-size:20px'>Params:</label>
+                        <p>{{form.params}}</p>
+
+                        <label for="{{ form.path_to_removing_file.id_for_label }}" class='Basket' style='font-size:20px'>path:</label>
+                        <p class="post-form">{{form.path_to_removing_file}}</p>
+                        
+                        <label for="{{ form.restorename.id_for_label }}" class='Basket' style='font-size:20px'>restorename:</label>
+                        <p class="post-form">{{form.restorename}}</p>
+
+                        <label for="{{ form.regexp.id_for_label }}" class='Basket' style='font-size:20px'>regexp:</label>
+                        <p class="post-form">{{form.regexp}}</p>
+                         <button type="submit" class="save btn btn-default" name="create_task_button">Create task</button>
+                    </div>{% endcomment %}
+                   
+      
 </div>
  </div>
 

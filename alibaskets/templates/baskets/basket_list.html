@@ -13,12 +13,25 @@
                 </ul>
                 </div>
 
-
                 <div class="col-md-4"> 
                 </div>
                 
                 <div class="col-md-4">
-                tasks  
+               
+                 
+                <ul class="nav nav-pills nav-stacked ">
+                   {% for task in tasks %}
+                  <li role="presentation">
+                      {% if task.is_alive %}
+                        <span class="glyphicon glyphicon-trash" style="color: black"></span> {{ task.action }}</a></li>
+                       {%endif%}
+                    {% endfor %}
+                </ul>
+
+                 {% comment %}<form method="POST" class="post-form">{% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="save btn btn-default">Save</button>
+                </form>{% endcomment %}
                 </div>
 
 {% endblock content %}

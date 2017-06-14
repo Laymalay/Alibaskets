@@ -42,6 +42,16 @@
         <script type="text/javascript" src="{% static 'css/bootstrap-select-1.12.2/dist/js/jquery-1.10.2.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'css/bootstrap-select-1.12.2/dist/js/bootstrap.min.js' %}"></script>{% endcomment %}
 
+        
+
+        <div>
+                <footer class="footer">
+                    <div class="container">
+                        <p class="text-muted"> &copy; Alinka
+                            2017 </p>
+                    </div>
+                    </footer>
+        </div>
         <div>
                 {%if messages%}
         {% for message in messages %}
@@ -52,16 +62,6 @@
             {% endfor %}   
         {% endif %}
         </div>
-
-        <div>
-                <footer class="footer">
-                    <div class="container">
-                        <p class="text-muted"> &copy; Alinka
-                            2017 </p>
-                    </div>
-                    </footer>
-        </div>
-
     {% comment %}<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>{% endcomment %}
     </body>

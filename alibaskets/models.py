@@ -25,3 +25,26 @@ class Basket(models.Model):
         ordering = ['name']
 
 
+class Task(models.Model):
+    PARAMS_CHOICES = (('Remove params', (
+                                        ('f', 'file'),
+                                        ('d', 'empty directory'),
+                                        ('r', 'nor empty directory'),
+                            )
+                        ),
+                        ('Restore params', (
+                                ('m', 'merge'),
+                                ('r', 'replace'),
+                            )
+                        ),)
+    ACTION_CHOICES = (('RM', 'remove'),
+                      ('RS', 'restore'),)
+    params = models.CharField(max_length=20, choices=PARAMS_CHOICES, default='file')
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES, default='remove')
+    basket_path = models.CharField(max_length=50)
+    restorename = models.CharField(max_length=30, blank=True, null=True)
+    path_to_removing_file = models.CharField(max_length=50, blank=True, null=True)
+    regexp = models.CharField(max_length=30, blank=True, null=True)
+    is_alive = models.BooleanField(default=False)
+    def __unicode__(self):
+        return u'%s %s %s' % (self.action, self.basket_path, self.path_to_removing_file)
