@@ -1,7 +1,8 @@
  {% extends 'baskets/base.html' %}
 
     {% block content %}
-    <div class="row">
+    <div class="row" >
+
     <div class="col-md-3">
                 
                 <p class="basket">
@@ -54,9 +55,9 @@
                     {{object.name|capfirst}}
                 </option>{% endcomment %}
 
-                 <li style='font-family: Titillium Web, sans-serif;'>{{ object.name }} 
-                 <p style='font-size:12px; font-family: Titillium Web, sans-serif;'>{{ object.time}} </p>
-                  <p style='font-size:12px; color:red; font-family: Titillium Web, sans-serif;'>{{object.disappearances_time}} </p>
+                 <p style='font-family: Titillium Web, sans-serif; font-size: 30px'>   {{ object.name }} 
+                 <p style='font-size:12px; font-family: Titillium Web, sans-serif;'>   {{ object.time}} </p>
+                  <p style='font-size:12px; color:red; font-family: Titillium Web, sans-serif;'>   {{object.disappearances_time}} </p>
                  <hr>
                 {% endfor %}
             </div>
@@ -65,8 +66,8 @@
     </div>
 <div class="col-md-1">
     </div>
- <div class="col-md-3">
-
+ <div class="col-md-3" style="right:50px">
+<p class="basket"><span class="glyphicon glyphicon-star" style="color: black ;font-size:40px"></span>  Create task:</p>
 <form method="POST" class="post-form">
                     {% csrf_token %}
                     {{ form.as_p }}

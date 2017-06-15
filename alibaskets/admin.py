@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from alibaskets.models import Basket
+from alibaskets.models import Basket, Task
 
 
 class BasketAdmin(admin.ModelAdmin):
@@ -13,3 +13,4 @@ class BasketAdmin(admin.ModelAdmin):
     ordering = ('last_access', 'date_created')
     fields = ('name', 'path') #change the fields which could be edited
 admin.site.register(Basket, BasketAdmin)
+admin.site.register(Task)

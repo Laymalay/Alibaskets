@@ -1,38 +1,77 @@
 {% extends 'baskets/base.html' %}
 {% block content %}
-            <div class="row">
-                <div class="col-md-4">
-                <a href="{% url 'alibaskets:basket_new' %}" ><span class="glyphicon glyphicon-plus"></span></a>
-                <!--<a class="top-menu"><span class="glyphicon glyphicon-minus"></span></a>-->
-                <ul class="nav nav-pills nav-stacked ">
-                   {% for basket in baskets %}
-                  <li role="presentation">
-                  <a href="{% url 'alibaskets:basket_detail' pk=basket.pk %}" title="detail">
-                  <span class="glyphicon glyphicon-trash" style="color: black"></span> {{ basket.name }}</a></li>
-                {% endfor %}
-                </ul>
-                </div>
-
-                <div class="col-md-4"> 
-                </div>
-                
-                <div class="col-md-4">
-               
-                 
-                <ul class="nav nav-pills nav-stacked ">
-                   {% for task in tasks %}
-                  <li role="presentation">
-                      {% if task.is_alive %}
-                        <span class="glyphicon glyphicon-trash" style="color: black"></span> {{ task.action }}</a></li>
-                       {%endif%}
+<div class="row" >
+    <div class="col-md-4">
+        <a href="{% url 'alibaskets:basket_new' %}" ><span class="glyphicon glyphicon-plus"></span></a>
+        <!--<a class="top-menu"><span class="glyphicon glyphicon-minus"></span></a>-->
+        <ul class="nav nav-pills nav-stacked ">
+        {% for basket in baskets %}
+        <li role="presentation">
+        <a href="{% url 'alibaskets:basket_detail' pk=basket.pk %}" title="detail">
+        <span class="glyphicon glyphicon-trash" style="color: black"></span> {{ basket.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">     
+        <div class="panel panel-success">
+            <div class="panel-heading"> 
+                <span class="glyphicon glyphicon-star" style="color: black"></span>  
+                                            Tasks 
+            </div>   
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked ">    
+                    {% for task in tasks %}
+                        <li  role="presentation">
+                            <a href="{% url 'alibaskets:task_detail' pk=task.pk %}" title="detail">
+                                 {{ task.get_action_display }} | {{ task.status }} | {{task.progress}} | {{task.restorename}} | {{task.path_to_removing_file}}
+                            </a>
+                                {%if task.progress < 100 %}
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-aqua" role="progressbar" url="{% url 'alibaskets:task_status' pk=task.pk %}" style="width:0%">
+                                        </div>
+                                    </div>
+                                {%endif%}
+                                {%if task.progress == 100 %}
+                                    <div class="progress ">
+                                        <div class="progress-bar progress-bar-aqua" role="progressbar" url="{% url 'alibaskets:task_status' pk=task.pk %}" style="width:100%; opacity:0.5">
+                                        </div>
+                                    </div>
+                                {%endif%}
+                        </li>
                     {% endfor %}
                 </ul>
+            </div>
+        </div>
+</div>
+        </div>
 
-                 {% comment %}<form method="POST" class="post-form">{% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="save btn btn-default">Save</button>
-                </form>{% endcomment %}
-                </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script type="text/javascript">
+        (function worker() {
+            $.ajax({
+                beforeSend: function(data) {
+                    var x = document.getElementsByClassName("progress-bar");
+                    var i;
+                    for (i = 0; i < x.length; i++) {
+                        console.log(x[i].getAttribute('url'))
+                        var req = new XMLHttpRequest();
+                        req.open("GET", "http://localhost:8000"+x[i].getAttribute('url'), false);
+                        req.send(null);
+                        var valeur = req.responseText;
+                        console.log(valeur)
+                        x[i].style.width = valeur + '%';
+                    }
+                },
+                complete: function() {
+                    // Schedule the next request when the current one's complete
+                    setTimeout(worker, 1000);
+                }
+            });
+        })();
+    </script>
+
 
 {% endblock content %}
-  

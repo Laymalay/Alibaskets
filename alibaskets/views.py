@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponse, Http404
-from alibaskets.models import Basket
 from django.views.generic import ListView, CreateView
 from django.core.urlresolvers import reverse
 from django.views import generic
@@ -14,6 +13,12 @@ from notifications.signals import notify
 from django.contrib import messages
 import shutil
 from alirem import getsize
+from celery.task.control import inspect
+from alibaskets.tasks import *
+from alibaskets.models import Basket
+from celery.result import AsyncResult
+import json
+from django.forms.models import model_to_dict
 
 
 def basket_new(request):
@@ -52,26 +57,35 @@ def basket_detail(request, pk):
                                                    'max_size':basket.max_size})
         if request.POST.get("create_task_button") is not None:
             if taskform.is_valid():
-                task = taskform.save()
-                if task.get_action_display() == 'remove':
-                    remover = Alirem()
-                    try:
-                        task.is_alive = True
-                        remover.remove(path=task.path_to_removing_file,
-                                       basket_path=basket.path,
-                                       is_dir=(task.params == 'd'),
-                                       is_recursive=(task.params == 'r'))
-                        task.is_alive = False
-                    except Exception as e:
-                        print e
-                        messages.add_message(request, messages.ERROR, "Invalid form")
-                    return redirect('alibaskets:basket_detail', pk=basket.pk)
-                elif task.get_action_display() == 'restore':
-                    restorer = Alirem()
-                    if not restorer.restore(restorename=task.restorename, basket_path=basket.path,
-                                            is_merge=(task.params == 'm'),
-                                            is_replace=(task.params == 'r')):
+                if taskform.cleaned_data['action'] == 'RM':
+                    if  os.path.exists(taskform.cleaned_data['path_to_removing_file']):
+                        task = taskform.save()
+                        job = remove.apply_async([task.path_to_removing_file,
+                                                  basket.path,
+                                                  (task.params == 'd'),
+                                                  (task.params == 'r')])
+                        task.task_id = job.id
+                        task.basket_path = basket.path
+                        task.progress = 0
+                        task.status = 'START'
+                        task.save()
+                    else:
                         messages.add_message(request, messages.ERROR, "This path is not exists")
+                    return redirect('alibaskets:basket_detail', pk=basket.pk)
+                elif taskform.cleaned_data['action'] == 'RS':
+                    if  os.path.exists(os.path.join(basket.path,taskform.cleaned_data['restorename'])):
+                        task = taskform.save()
+                        job = restore.apply_async([task.restorename,
+                                                   basket.path,
+                                                   (task.params == 'm'),
+                                                   (task.params == 'r')])
+                        task.task_id = job.id
+                        task.basket_path = basket.path
+                        task.progress = 0
+                        task.status = 'START'
+                        task.save()
+                    else:
+                        messages.add_message(request, messages.ERROR, "This file is not exists in this basket")
                     return redirect('alibaskets:basket_detail', pk=basket.pk)
         if request.POST.get("update_button") is not None:
             if form_edit_basket.is_valid():
@@ -87,16 +101,20 @@ def basket_detail(request, pk):
                                            'delta_time':basket.delta_time,
                                            'max_size':basket.max_size})
         basket_handler = Alirem()
-        basket_handler.check_basket_for_cleaning(mode=basket.get_mode_display(),
-                                                 basket_path=basket.path,
-                                                 time=iso8601(basket.delta_time),
-                                                 size=basket.max_size)
-        list_of_objects_in_basket = basket_handler.get_basket_list(basket.path)
-        basket_size= getsize.get_size(basket.path) / 1000000.0
-        basket_size_in_proc = (int)(basket_size/basket.max_size*100.0)
-        for obj in list_of_objects_in_basket:
-            print obj
-            obj.disappearances_time = obj.time + basket.delta_time
+
+        # basket_handler.check_basket_for_cleaning(mode=basket.get_mode_display(),
+        #                                          basket_path=basket.path,
+        #                                          time=iso8601(basket.delta_time),
+        #                                          size=basket.max_size)
+        if os.path.exists(basket.path):
+            list_of_objects_in_basket = basket_handler.get_basket_list(basket.path)
+            basket_size = getsize.get_size(basket.path) / 1000000.0
+            basket_size_in_proc = (int)((basket_size*100.0)/basket.max_size)
+            for obj in list_of_objects_in_basket:
+                obj.disappearances_time = obj.time + basket.delta_time
+        else:
+            list_of_objects_in_basket = None
+            basket_size_in_proc = 0
         return render(request, 'baskets/basket_detail.html',
                       {'basket': basket,
                        'form' : taskform,
@@ -104,11 +122,53 @@ def basket_detail(request, pk):
                        'list_of_objects': list_of_objects_in_basket,
                        'basket_size_in_proc': basket_size_in_proc})
 
+def task_detail(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    return render(request, 'baskets/task_detail.html',{'task' : model_to_dict(task)})
 
 def basket_list(request):
     baskets = Basket.objects.all()
     tasks = Task.objects.all()
-    return render(request, 'baskets/basket_list.html', {'baskets': baskets, 'tasks':tasks})
+    for task in tasks:
+        if task.action == 'RM':
+            result = AsyncResult(task.task_id, app=remove)
+        elif task.action == 'RS':
+            result = AsyncResult(task.task_id, app=restore)
+
+        if  result.info is not None:
+            task.progress = result.info['process_percent']
+        else:
+            task.progress = 100
+        task.status = result.status
+        task.save()
+    return render(request, 'baskets/basket_list.html', {'baskets': baskets, 'tasks': reversed(tasks)})
+
+
+def task_status(request,pk):
+    task = get_object_or_404(Task, pk=pk)
+    tasks = Task.objects.all()
+
+    # for taska in tasks:
+    #     if taska.action == 'RM':
+    #         res = AsyncResult(task.task_id, app=remove)
+    #     elif taska.action == 'RS':
+    #         res = AsyncResult(task.task_id, app=restore)
+    #     if res.info is not None:
+    #         taska.progress = res.info['process_percent']
+    #     taska.status = res.status
+    #     taska.save()
+
+    if task.action == 'RM':
+        result = AsyncResult(task.task_id, app=remove)
+    elif task.action == 'RS':
+        result = AsyncResult(task.task_id, app=restore)
+    if result.info is None:
+        data = 100
+    else:
+        data = result.info['process_percent']
+    json_data = json.dumps(data)
+    return HttpResponse(json_data)
+
 
 def iso8601(value):
     # split seconds to larger units
