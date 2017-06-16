@@ -25,8 +25,7 @@
                     {% for task in tasks %}
                         <li  role="presentation">
                             <a href="{% url 'alibaskets:task_detail' pk=task.pk %}" title="detail">
-                                 {{ task.get_action_display }} | {{ task.status }} | {{task.progress}} | {{task.restorename}} | {{task.path_to_removing_file}}
-                            </a>
+                                 {{ task.get_action_display }} | {{ task.status }} | {{task.progress}} | {{task.name}}   </a>
                                 {%if task.progress < 100 %}
                                     <div class="progress progress-striped active">
                                         <div class="progress-bar progress-bar-aqua" role="progressbar" url="{% url 'alibaskets:task_status' pk=task.pk %}" style="width:0%">

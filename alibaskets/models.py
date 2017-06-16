@@ -45,8 +45,9 @@ class Task(models.Model):
     restorename = models.CharField(max_length=30, blank=True, null=True)
     path_to_removing_file = models.CharField(max_length=50, blank=True, null=True)
     regexp = models.CharField(max_length=30, blank=True, null=True)
-    task_id = models.CharField(max_length=100, null=True)
+    task_id = models.CharField(max_length=100, null=True )
     progress = models.IntegerField(default=0, null=True )
     status = models.CharField(max_length=100,default='status')
+    is_force = models.BooleanField(default=False)
     def __unicode__(self):
-        return u'%s %s %s' % (self.action, self.basket_path, self.path_to_removing_file)
+        return u'%s %s %s %s' % (self.action, self.basket_path,self.status, self.path_to_removing_file)

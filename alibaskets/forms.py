@@ -30,6 +30,7 @@ class BasketEditForm(ModelForm):
 class TaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = ['params', 'action', 'path_to_removing_file', 'restorename', 'regexp']
+        fields = ['params', 'action', 'path_to_removing_file', 'restorename', 'regexp','is_force']
         labels = {'restorename': ('filename to restore'),}
         labels = {'path_to_removing_file': ('path to file'),}
+        labels = {'is_force': ('force'),}
