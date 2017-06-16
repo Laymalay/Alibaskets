@@ -25,7 +25,7 @@
                     {% for task in tasks %}
                         <li  role="presentation">
                             <a href="{% url 'alibaskets:task_detail' pk=task.pk %}" title="detail">
-                                 {{ task.get_action_display }} | {{ task.status }} | {{task.progress}} | {{task.name}}   </a>
+                                 {{ task.get_action_display }} | {{ task.status }} |  {{task.name}}   </a>
                                 {%if task.progress < 100 %}
                                     <div class="progress progress-striped active">
                                         <div class="progress-bar progress-bar-aqua" role="progressbar" url="{% url 'alibaskets:task_status' pk=task.pk %}" style="width:0%">
@@ -55,14 +55,16 @@
                     var x = document.getElementsByClassName("progress-bar");
                     var i;
                     for (i = 0; i < x.length; i++) {
-                        console.log(x[i].getAttribute('url'))
-                        var req = new XMLHttpRequest();
-                        req.open("GET", "http://localhost:8000"+x[i].getAttribute('url'), false);
-                        req.send(null);
-                        var valeur = req.responseText;
-                        console.log(valeur)
-                        x[i].style.width = valeur + '%';
-                    }
+                       
+                            console.log(x[i].getAttribute('url'))
+                            var req = new XMLHttpRequest();
+                            req.open("GET", "http://localhost:8000"+x[i].getAttribute('url'), false);
+                            req.send(null);
+                            var valeur = req.responseText;
+                            console.log(valeur)
+                            x[i].style.width = valeur + '%';
+                        }
+                    
                 },
                 complete: function() {
                     // Schedule the next request when the current one's complete

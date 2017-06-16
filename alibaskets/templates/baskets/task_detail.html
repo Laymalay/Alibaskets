@@ -5,6 +5,8 @@
 
      <div class="row" >
                <div class="col-md-2">
+                       <a title='remove task' href="{% url 'alibaskets:remove_task' pk=task.pk %}" >
+                         <span style='font-size:30px; color:red ' class="glyphicon glyphicon-remove-sign"></span></a>
                </div>
                <div class="col-md-8">
               
@@ -16,7 +18,7 @@
                        
                         </tr>
                      </thead>
-                {% for key, value in task.iteritems %}
+                {% for key, value in task_dict.iteritems %}
                 
                 <tr>
                         <th> {{ key }} </th>

@@ -11,7 +11,7 @@ from multiprocessing import current_process
 
 def update_progress(file_now, total_size, existing_file_size=None):
     if existing_file_size is not None:
-        percent = int(((get_size(file_now)*100.0)-existing_file_size)/(total_size+1))-100
+        percent = int(((get_size(file_now)-existing_file_size)*100.0)/(total_size+1))
     else:
         percent = int((get_size(file_now)*100.0)/(total_size+1))
     return percent

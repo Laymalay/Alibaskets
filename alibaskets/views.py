@@ -50,6 +50,15 @@ def remove_basket(request, pk):
     return render(request, 'baskets/remove_basket.html', {'name': name})
 
 
+def remove_task(request, pk):
+    task = get_object_or_404(Task,pk=pk)
+    if task.status == 'SUCCESS':
+        task.delete()
+        message = "Task deleted successfully"
+    else:
+        message = "Can not delete an active task"
+    return render(request, 'baskets/remove_task.html', {'message': message})
+
 def basket_can_be_cleared(basket_pk):
     basket = get_object_or_404(Basket, pk=basket_pk)
     update_tasks()
@@ -133,7 +142,6 @@ def basket_detail(request, pk):
                 basket.save()
                 basket_handler = Alirem()
                 if basket_can_be_cleared(pk):
-                    print 'CAN'
                     basket_handler.check_basket_for_cleaning(mode=basket.get_mode_display(),
                                                              basket_path=basket.path,
                                                              time=iso8601(basket.delta_time),
@@ -163,29 +171,19 @@ def basket_detail(request, pk):
                        'basket_size_in_proc': basket_size_in_proc})
 
 def task_detail(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    task_dict = model_to_dict(task)
-    task_dict['action'] = task.get_action_display()
-    task_dict['params'] = task.get_params_display()
-    return render(request, 'baskets/task_detail.html', {'task' : task_dict})
+    if request.method == "POST":
+        if request.POST.get("delete") is not None:
+            print 'delete'
+    else:
+        task = get_object_or_404(Task, pk=pk)
+        task_dict = model_to_dict(task)
+        task_dict['action'] = task.get_action_display()
+        task_dict['params'] = task.get_params_display()
+        return render(request, 'baskets/task_detail.html', {'task_dict' : task_dict, 'task':task})
 
 def basket_list(request):
-    baskets = Basket.objects.all()
-    tasks = Task.objects.all()
-    for task in tasks:
-        if task.task_id is not None:
-            if task.action == 'RM':
-                result = AsyncResult(task.task_id, app=remove)
-                task.name = os.path.basename(task.path_to_removing_file)
-            elif task.action == 'RS':
-                result = AsyncResult(task.task_id, app=restore)
-                task.name = task.restorename
-            if  result.info is not None:
-                task.progress = result.info['process_percent']
-            else:
-                task.progress = 100
-            task.status = result.status
-            task.save()
+    baskets = Basket.objects.all()   
+    tasks = update_tasks()
     return render(request, 'baskets/basket_list.html',
                   {'baskets': baskets, 'tasks': reversed(tasks)})
 
@@ -206,20 +204,11 @@ def update_tasks():
                 task.progress = 100
             task.status = result.status
             task.save()
+    return tasks
 
 def task_status(request,pk):
     task = get_object_or_404(Task, pk=pk)
     tasks = Task.objects.all()
-
-    # for taska in tasks:
-    #     if taska.action == 'RM':
-    #         res = AsyncResult(task.task_id, app=remove)
-    #     elif taska.action == 'RS':
-    #         res = AsyncResult(task.task_id, app=restore)
-    #     if res.info is not None:
-    #         taska.progress = res.info['process_percent']
-    #     taska.status = res.status
-    #     taska.save()
     if task.task_id is not None:
         if task.action == 'RM':
             result = AsyncResult(task.task_id, app=remove)
